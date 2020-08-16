@@ -1,0 +1,12 @@
+<%= @games.name %><br />
+<%= @games.platform %> <br />
+
+<h2>Games</h2>
+<ul>
+<% @games.each do |game| %>
+  <li><a href="/games/<%=game.id%>"><%= game.name %></a></li>
+<% end%>
+</ul>
+<a href="/bags/<%=@game.id%>/edit">Edit</a>
+<br />
+<br />

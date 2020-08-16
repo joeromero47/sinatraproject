@@ -1,0 +1,6 @@
+<p> Here are your games, <%= @user.email %>
+<% @user.games.each do |game| %>
+  <ul>
+    <li><a href="/games/<%=game.id%>"><%= game.name %></a></li>
+  </ul>
+<% end %>

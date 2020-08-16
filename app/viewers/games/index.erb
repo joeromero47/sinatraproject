@@ -1,0 +1,7 @@
+<% @games.each do |game| %>
+  <%= game.name %><br />
+  <%= game.platform %> <br />
+  <a href="/bags/<%=game.id%>/edit">Edit</a>
+  <br />
+  <br />
+<% end %>
