@@ -6,36 +6,11 @@ class ApplicationController < Sinatra::Base
     set :public_folder, 'public'
     set :views, 'app/viewers'
     enable :sessions 
-    set :session_secret, SecureRandom.hex(64)
+    set :session_secret, ENV['SESSION_SECRET']
   end
 
   get '/' do 
     erb :index
-  end 
-
-  post 'login' do 
-    @user = User.find_by(:username => params[:username])
-    if @user !=nil && @user.password == params[:password]
-      session[:user_id] = @user.id 
-      redirect '/welcome'
-    else
-    erb :error
-    end 
-  end 
-  
-  get '/welcome' do
-    @current_user = User.find_by(:session[:user_id])
-    if @current_user 
-      erb :welcome 
-    else 
-      erb :error 
-    end 
-  end 
-
-
-  get '/logout' do 
-    session.clear 
-    redirect to '/'
   end 
 
   helpers do 
@@ -45,12 +20,16 @@ class ApplicationController < Sinatra::Base
       end 
     end 
     
-    def logged_in?
-      !!session[:user_id]
-    end 
-    
     def current_user 
-      User.find(session[:user_id])
+      @user = User.find_by_id(session[:user_id])
+    end 
+
+    def logged_in?
+      !!current_user
+    end 
+
+    def redirect_if_not_logged_in
+      redirect '/login' unless logged_in?
     end 
   end 
 end 

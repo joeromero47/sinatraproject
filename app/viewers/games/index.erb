@@ -1,7 +1,10 @@
+<h1>Welcome to your game collection:</h1>
 <% @games.each do |game| %>
   <%= game.name %><br />
   <%= game.platform %> <br />
-  <a href="/bags/<%=game.id%>/edit">Edit</a>
+  <a href="/games/<%=game.id%>/edit">Edit</a>
   <br />
   <br />
 <% end %>
+<a href="/games/new">Add a new game to your collection!</a>
+<p><a href="/logout">Log Out</a></p>

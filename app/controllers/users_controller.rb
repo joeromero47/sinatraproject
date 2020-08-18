@@ -24,18 +24,24 @@ class UsersController < ApplicationController
     if params[:username] == "" || params[:password] == ""
       redirect to '/signup'
     else
-      @user = User.create(:email => params[:email], :password => params[:password])
-      session[:user_id] = @user.id
-      redirect '/bags'
+      user = User.create(:email => params[:email], :password => params[:password])
+      session[:user_id] = user.id
+      redirect '/games'
     end
   end
 
   get '/login' do 
-    @error_message = params[:error]
-    if !session[:user_id]
-      erb :'users/login'
+    erb :'users/login'
+  end
+
+  post '/login' do
+    user = User.find_by(email: params[:email])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect to '/games'
     else
-      redirect '/games'
+      @error = "invalid credentials"
+      erb 'users/login'
     end
   end
 

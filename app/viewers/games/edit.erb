@@ -1,11 +1,21 @@
 <h1>Edit <%= @games.name %></h1>
 
 <form action="/games/<%=@games.id %>" method="POST">
-  <label> Game Name </label>
+<input type="hidden" name="_method" value="put"  
+<label> Game Name </label>
   <input type="text" name="name" value="<%=@games.name %>"> </br>
 
   <label> platform </label>
-  <input type="text" name="capacity" value="<%=@games.platform %>"> </br>
+  <input type="text" name="platform" value="<%=@games.platform %>"> </br>
 
-  <input type="submit" value="Update">
+  <input type="submit" value="update">
+  
+  
 </form>
+
+<form action="/games/<%=@games.id%>" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete Game?">
+</form>
+
+<p><a href="/logout">Log Out</a></p>
