@@ -2,7 +2,6 @@ class GamesController < ApplicationController
 
   get "/games" do
     redirect_if_not_logged_in
-      #session[:message] = 'hello'
       @games = current_user.games
       erb :'games/index'
   end
@@ -18,13 +17,9 @@ class GamesController < ApplicationController
       redirect '/games/index'
     else
       game = current_user.games.build(params)
-    #game.complete = false 
-    #if game.save
-    #game = Game.create(params)
       game.save
       redirect "games/#{game.id}"
     end 
-
   end 
 
   get '/games/:id' do
@@ -39,38 +34,27 @@ class GamesController < ApplicationController
   end
 
   post "/games/:id" do 
-    #redirect_if_not_logged_in
     set_game
-    #unless Game.valid_params?(params)
-    #  redirect "/games/#{@games.id}/edit?error=invalid game"
-    #end
     @games.update(params.select{|k|k=="name" || k=="platform"})
     redirect "/games/#{@games.id}"
   end
 
   put '/games/:id' do 
-    params.delete(:_method)
-    set_game
-    @games.update(params)
-    redirect '/games'
+    @editgame = Game.find(params[:id])
+    if @editgame.user_id != current_user[:user_id]
+      redirect '/games/index'
+    else 
+      params.delete(:_method)
+      set_game
+      @games.update(params)
+      redirect '/games'
+    end 
   end 
 
-  #delete '/games/:id' do 
-   # if game = current_user.games.find_by_id(params[:id])
-    #  game.destroy
-     # redirect '/games'
-    #else 
-     # redirect '/games'
-    #end 
-    #game = Game.find_by_id(params[:id])
-    #game.destroy
-    #redirect "/games"
-  #end 
-
-delete '/games/:id' do
-  @games = Game.delete(params[:id])
-  redirect to("/games")
-end
+  delete '/games/:id' do
+    @games = Game.delete(params[:id])
+    redirect to("/games")
+  end
 
   private
 
